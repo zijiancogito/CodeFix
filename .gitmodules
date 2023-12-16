@@ -1,0 +1,3 @@
+[submodule "disassembler"]
+	path = disassembler
+	url = https://github.com/decompetition/disassembler.git
