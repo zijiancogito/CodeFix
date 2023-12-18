@@ -8,11 +8,14 @@ client = OpenAI(api_key='sk-fnW7WGNc6sfkWrf1SZLiPdLPclvm38X4JcT1M9m4OXmfOQ4f',
                 base_url='https://api.openai-proxy.org/v1')
 
 def compile(code, d, candicate_id=0):
-    c_file = f'{d}/{candicate_id}.c'
+    sub_d = os.path.join(d, candicate_id)
+    if not os.path.exist(sub_d):
+        os.mkdir(os.path.join(d, candicate_id))
+    c_file = f'{sub_d}/source.c'
     with open(c_file, 'w') as f:
         f.write(code)
 
-    o_file = f'{d}/{candicate_id}.o'
+    o_file = f'{sub_d}/binary.out'
     compile_command = ["gcc", c_file, "-o", o_file]
     
     try:
@@ -87,12 +90,25 @@ def chat(code, d):
 
 
 if __name__ == '__main__':
+    # code = None
+    # work_space = '../test/'
+    # with open('../test/dec.c', 'r') as f:
+        # code = f.read().strip()
+    # fixed_code = chat(code, work_space)
+
+    import argparse
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument('dir', help='path to chall dir')
+
+    args = parser.parse_args()
+
     code = None
-    work_space = '../test/'
-    with open('../test/dec.c', 'r') as f:
-        code = f.read().strip()
-    fixed_code = chat(code, work_space)
-    print(fixed_code)
+    with open(os.path.join(args.dir, 'starter.c'), 'r') as f:
+        code = f.read()
 
+    fixed_code = chat(code, args.dir)
 
+    with open(os.path.join(args.dir, 'final.c'), 'w') as f:
+        f.write(fixed_code)
 
