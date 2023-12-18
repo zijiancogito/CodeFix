@@ -65,6 +65,10 @@ class ChallengeInfo:
         cmd = f"python3 {disassembler} -l c -s -y {impl.binary} {' '.join(impl.info.functions)} > {impl.disasm}"
         os.system(cmd)
 
+    def init_chall(self):
+        init_impl = self.impl(self.folder)
+        self.disassemble(init_impl, True)
+
 
 def load(path):
     root = os.path.abspath(os.path.dirname(path))
@@ -87,18 +91,6 @@ if __name__ == '__main__':
 
     challenges = load(args.config)
     for challenge in challenges:
-        print('Name:', challenge.name)
-        print('  Container: ', challenge.container)
-        print('  Functions: ', ' '.join(challenge.functions))
-        print('  Builder:   ', challenge.builder)
-        print('  Options:   ', ' '.join(challenge.options))
-        print()
-        print('  Source:    ', challenge.source)
-        print('  Binary:    ', challenge.binary)
-        print('  Disasm:    ', challenge.disasm)
-        print('  Starter:   ', challenge.starter)
-        print('  Tester:    ', challenge.tester)
-        print()
 
         init_impl = challenge.impl(challenge.folder)
         # challenge.build(init_impl)

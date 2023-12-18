@@ -4,13 +4,11 @@ from openai import OpenAI
 import subprocess
 import re
 
-client = OpenAI(api_key='sk-fnW7WGNc6sfkWrf1SZLiPdLPclvm38X4JcT1M9m4OXmfOQ4f', 
-                base_url='https://api.openai-proxy.org/v1')
 
 def compile(code, d, candicate_id=0):
-    sub_d = os.path.join(d, candicate_id)
-    if not os.path.exist(sub_d):
-        os.mkdir(os.path.join(d, candicate_id))
+    sub_d = os.path.join(d, str(candicate_id))
+    if not os.path.exists(sub_d):
+        os.mkdir(sub_d)
     c_file = f'{sub_d}/source.c'
     with open(c_file, 'w') as f:
         f.write(code)
@@ -64,6 +62,8 @@ def chat(code, d):
     if len(err_prompt) == 0:
         return code
 
+    client = OpenAI(api_key='sk-fnW7WGNc6sfkWrf1SZLiPdLPclvm38X4JcT1M9m4OXmfOQ4f', 
+                    base_url='https://api.openai-proxy.org/v1')
     while True:
         prompt = f"{head_prompt}:\n{code}\n{err_prompt}\n{tail_prompt}"
         messages.append({"role":"user", "content":prompt})
@@ -87,6 +87,8 @@ def chat(code, d):
 
         if len(err_prompt) == 0:
             return code
+        if candicate_id == 20:
+            return None
 
 
 if __name__ == '__main__':

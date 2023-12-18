@@ -1,0 +1,24 @@
+{
+	"defaults": {
+		"folder":  "%r/%n",
+		"source":  "%f/source%x",
+		"binary":  "%f/binary.out",
+		"starter": "%f/starter%x",
+		"final":   "%f/final%x",
+		"disasm":  "%f/disasm.yml",
+		"tester":  "%f/test.py",
+
+		"container": "decompetition/builder-2020",
+		"builder":   "%r/build.sh",
+		"options":   []
+	},
+
+	"binaries": {
+		"baby": {
+			"functions": [
+				"foo",
+				"main"
+			]
+		}
+	}
+}
