@@ -1,15 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdint.h>
 
-#ifdef _MSC_VER
-#include <intrin.h>
-#define FASTCALL __fastcall
-#else
-#define FASTCALL __attribute__((fastcall))
-#endif
-
-int64_t FASTCALL foo(int a1, int a2)
+// Removing the __fastcall calling convention specifier, as it may not be supported
+// by all compilers or may require specific compiler flags.
+long long foo(signed int a1, signed int a2)
 {
   while ( a1 != a2 )
   {
@@ -28,18 +22,18 @@ int64_t FASTCALL foo(int a1, int a2)
 
 int main(int argc, const char **argv)
 {
-  unsigned int v3; // eax
-  unsigned int v5; // num1
-  unsigned int v6; // num2
+  unsigned int v3;
+  unsigned int v5;
+  unsigned int v6;
 
   if ( argc != 3 )
   {
     fprintf(stderr, "USAGE: %s <num1> <num2>\n", *argv);
     exit(1);
   }
-  v5 = atoi(argv[1]);
-  v6 = atoi(argv[2]);
-  v3 = foo(v5, v6);
+  v5 = (unsigned int)atoi(argv[1]);
+  v6 = (unsigned int)atoi(argv[2]);
+  v3 = (unsigned int)foo(v5, v6);
   printf("foo(%u, %u) = %u\n", v5, v6, v3);
   return 0;
 }

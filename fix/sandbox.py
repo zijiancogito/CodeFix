@@ -5,6 +5,7 @@ def build(chal, impl, options=[], **kwargs):
     source = '/mnt/' + os.path.basename(impl.source)
     binary = '/mnt/' + os.path.basename(impl.binary)
     return run(chal.container,
+            command = ['/run-me', source, binary] + options,
             volumes = [
             os.path.abspath(chal.builder) + ':/run-me:ro',
             os.path.abspath(impl.folder)  + ':/mnt'

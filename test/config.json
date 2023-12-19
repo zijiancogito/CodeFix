@@ -4,7 +4,7 @@
 		"source":  "%f/source%x",
 		"binary":  "%f/binary.out",
 		"starter": "%f/starter%x",
-		"final":   "%f/final%x",
+		"final":   "%f/final",
 		"disasm":  "%f/disasm.yml",
 		"tester":  "%f/test.py",
 
