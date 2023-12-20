@@ -9,7 +9,7 @@ if __name__ == '__main__':
 
     config = '../test/config.json'
 
-    challenges = challs.load(config)
+    challenges = challs.load(config, "O0")
     failed_list = []
     for challenge in challenges:
         challenge.init_chall()

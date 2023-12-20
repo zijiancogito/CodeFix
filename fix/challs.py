@@ -17,15 +17,17 @@ class ChallengeImpl:
 
 
 class ChallengeInfo:
-    def __init__(self, name, root, data, defaults={}):
+    def __init__(self, name, root, data, level, defaults={}):
         self.name = name
         self.extension = '.c'
+        self.level = level
 
         def replace(match):
             text = match.group()
             if text == '%n': return name
             if text == '%r': return root
             if text == '%f': return self.folder
+            if text == '%l': return self.level
             if text == '%x': return self.extension
             raise Exception('Unknown escape: ' + text)
 
@@ -70,7 +72,7 @@ class ChallengeInfo:
         self.disassemble(init_impl, True)
 
 
-def load(path):
+def load(path, level):
     root = os.path.abspath(os.path.dirname(path))
     with open(path) as file:
         config = json.load(file)
@@ -78,7 +80,7 @@ def load(path):
     challenges = []
     defaults   = config.get('defaults', {})
     for name, data in config['binaries'].items():
-        challenges.append(ChallengeInfo(name, root, data, defaults))
+        challenges.append(ChallengeInfo(name, root, data, level, defaults))
 
     return challenges
 
@@ -89,7 +91,7 @@ if __name__ == '__main__':
     parser.add_argument('config', help='path to config.json')
     args = parser.parse_args()
 
-    challenges = load(args.config)
+    challenges = load(args.config, 'O0')
     for challenge in challenges:
         print('Name:', challenge.name)
         print('  Container: ', challenge.container)

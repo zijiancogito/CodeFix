@@ -50,6 +50,7 @@ def build_error_prompt(errors):
     prompt = f"{init_prompt}\n{err_prompt}"
     return prompt
 
+
 def chat(code, d):
     messages = []
     head_prompt = "Please fix this code to be recompilable:"
