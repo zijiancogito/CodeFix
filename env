@@ -3,3 +3,6 @@ python3
 openai
 capstone
 pyyaml
+pyelftools
+intervaltree
+

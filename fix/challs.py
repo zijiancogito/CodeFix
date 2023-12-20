@@ -91,6 +91,18 @@ if __name__ == '__main__':
 
     challenges = load(args.config)
     for challenge in challenges:
+        print('Name:', challenge.name)
+        print('  Container: ', challenge.container)
+        print('  Functions: ', ' '.join(challenge.functions))
+        print('  Builder:   ', challenge.builder)
+        print('  Options:   ', ' '.join(challenge.options))
+        print()
+        print('  Source:    ', challenge.source)
+        print('  Binary:    ', challenge.binary)
+        print('  Disasm:    ', challenge.disasm)
+        print('  Starter:   ', challenge.starter)
+        print('  Tester:    ', challenge.tester)
+        print()
 
         init_impl = challenge.impl(challenge.folder)
         # challenge.build(init_impl)

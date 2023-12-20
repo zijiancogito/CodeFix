@@ -8,7 +8,7 @@
 		"disasm":  "%f/disasm.yml",
 		"tester":  "%f/test.py",
 
-		"container": "decompetition/builder-2020",
+		"container": "decompetition/builder-2021",
 		"builder":   "%r/build.sh",
 		"options":   []
 	},

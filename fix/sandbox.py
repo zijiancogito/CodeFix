@@ -29,7 +29,7 @@ def run(container, command, user='root', volumes=[], timeout=10):
             timeout=timeout
     )
 
-def test(chal, impl, verbost=False, **kwargs):
+def test(chal, impl, verbose=False, **kwargs):
     binary = '/mnt/' + os.path.join(impl.binary)
     scores = {'pass': 0, 'fail': 0, 'error': 0, 'total': 0}
     flags = ['-v'] if verbose else []
@@ -54,7 +54,7 @@ def test(chal, impl, verbost=False, **kwargs):
 
         if line.startswith('PASS'):
             scores['pass'] += 1
-        elif line.startswtih('FAIL'):
+        elif line.startswith('FAIL'):
             scores['fail'] += 1
         elif line.startswith('ERROR'):
             scores['error'] += 1
