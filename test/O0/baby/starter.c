@@ -1,3 +1,5 @@
+#include <hexrays.h>
+
 __int64 __fastcall foo(signed int a1, signed int a2)
 {
   while ( a1 != a2 )

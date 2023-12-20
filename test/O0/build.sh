@@ -10,12 +10,13 @@ source="$1"
 binary="$2"
 shift 2
 
+
 if grep -v include "$source" |
-   gcc  -E -nostdinc -undef -o - - |
+   gcc  -E -nostdinc -undef -O0 -I /idainclude/ -o - - |
    grep -qF "__asm" ;
 then
   echo "Nice try."
   exit 1
 fi
 
-gcc "$@" -fno-asm -g -o "$binary" "$source"
+gcc "$@" -fno-asm -g -O0 -I /idainclude/ -o "$binary" "$source"

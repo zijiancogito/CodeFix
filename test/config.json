@@ -1,6 +1,7 @@
 {
 	"defaults": {
-		"folder":  "%r/%n",
+		"folder":  "%r/%l/%n",
+		"include": "%r/include/",
 		"source":  "%f/source%x",
 		"binary":  "%f/binary.out",
 		"starter": "%f/starter%x",
@@ -9,7 +10,7 @@
 		"tester":  "%f/test.py",
 
 		"container": "decompetition/builder-2021",
-		"builder":   "%r/build.sh",
+		"builder":   "%r/%l/build.sh",
 		"options":   []
 	},
 

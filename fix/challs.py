@@ -40,6 +40,7 @@ class ChallengeInfo:
                 val = re.sub('%.', replace, val)
             return val
 
+        self.include = os.path.join(root, lookup('include'))
         self.folder = os.path.join(root, lookup('folder'))
         self.container = lookup('container')
         self.functions = lookup('functions')
@@ -99,6 +100,7 @@ if __name__ == '__main__':
         print('  Builder:   ', challenge.builder)
         print('  Options:   ', ' '.join(challenge.options))
         print()
+        print('  Include:   ', challenge.include)
         print('  Source:    ', challenge.source)
         print('  Binary:    ', challenge.binary)
         print('  Disasm:    ', challenge.disasm)

@@ -8,7 +8,8 @@ def build(chal, impl, options=[], **kwargs):
             command = ['/run-me', source, binary] + options,
             volumes = [
             os.path.abspath(chal.builder) + ':/run-me:ro',
-            os.path.abspath(impl.folder)  + ':/mnt'
+            os.path.abspath(impl.folder)  + ':/mnt',
+            os.path.abspath(chal.include) + ':/idainclude'
         ],
         **kwargs
     )
@@ -38,8 +39,9 @@ def test(chal, impl, verbose=False, **kwargs):
                 user='nobody',
                 command=['/run-me', *flags, binary],
                 volumes=[
-                    os.path.abspath(chal.tester) + ':/run-me:ro',
-                    os.path.abspath(impl.binary) + ':' + binary + ':ro'
+                    os.path.abspath(chal.tester)  + ':/run-me:ro',
+                    os.path.abspath(impl.binary)  + ':' + binary + ':ro',
+                    os.path.abspath(chal.include) + ':/idainclude'
                 ],
                 **kwargs
         )

@@ -1,7 +1,6 @@
-#include <stdio.h>
-#include <stdlib.h>
+#include <hexrays.h>
 
-long long __fastcall foo(signed int a1, signed int a2)
+__int64 __fastcall foo(signed int a1, signed int a2)
 {
   while ( a1 != a2 )
   {
@@ -18,11 +17,11 @@ long long __fastcall foo(signed int a1, signed int a2)
   return (unsigned int)a1;
 }
 
-int main(int argc, const char **argv)
+int __cdecl main(int argc, const char **argv, const char **envp)
 {
   unsigned int v3; // eax
-  unsigned int v5; // num1
-  unsigned int v6; // num2
+  unsigned int v5; // [rsp+18h] [rbp-8h]
+  unsigned int v6; // [rsp+1Ch] [rbp-4h]
 
   if ( argc != 3 )
   {
@@ -32,6 +31,6 @@ int main(int argc, const char **argv)
   v5 = atoi(argv[1]);
   v6 = atoi(argv[2]);
   v3 = foo(v5, v6);
-  printf("foo(%u, %u) = %u\n", v5, v6, v3);
+  printf("foo(%d, %d) = %d\n", v5, v6, v3);
   return 0;
 }
