@@ -50,6 +50,7 @@ class ChallengeInfo:
         self.source  = os.path.join(root, lookup('source'))   # Source code
         self.disasm  = os.path.join(root, lookup('disasm'))   # Raw disasm code
         self.binary  = os.path.join(root, lookup('binary'))   # Raw binary
+        self.recomp  = os.path.join(root, lookup('recomp'))
         self.final   = os.path.join(root, lookup('final'))    # fixed source code
         
         self.tester  = os.path.join(root, lookup('tester'))   # 

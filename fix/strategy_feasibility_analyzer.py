@@ -10,7 +10,7 @@ from openai import OpenAI
 
 # The last element in "messages" is the latest reply of GPT.
 
-def chat(prompt, model, messages=[]):
+def chat(prompt, function, context):
     """
     This function interacts with GPT through text.
 
@@ -24,11 +24,16 @@ def chat(prompt, model, messages=[]):
     """
     client = OpenAI(api_key='sk-fnW7WGNc6sfkWrf1SZLiPdLPclvm38X4JcT1M9m4OXmfOQ4f', 
                     base_url='https://api.openai-proxy.org/v1')
+    
+    init_prompt = "I want to optimize the control structures of the decompiled code and have designed some optimization strategies. Next, I will present the optimization strategies I have developed, followed by the function to be optimized. This function is one from the binary you learned about earlier. Based on the functionality of the previously understood binary and the current function, please determine whether this optimization strategy is applicable for optimizing this function. You can consider this from the perspective of code complexity, or whether you would use a different approach provided in the optimization strategy to write a function with the same functionality. Please analyze each relevant control statement; if it cannot be optimized, answer No. If it can be optimized, answer Yes and provide the method of optimization."
+    
+    prompt = f"{init_prompt}\nOptimization:\n{prompt}\nCode:\n{function}"
 
+    messages = []
+    messages.extend(context)
     messages.append({"role":"user", "content":prompt})
     init_response = client.chat.completions.create(
-            # model="gpt-3.5-turbo",
-            model=model,
+            model="gpt-3.5-turbo",
             messages=messages,
             stream=True,
             )
@@ -39,5 +44,5 @@ def chat(prompt, model, messages=[]):
             full_response += chunk.choices[0].delta.content
     messages.append({"role":"assistant", "content": full_response})
     
-    return messages
+    return full_response
 
