@@ -7,6 +7,7 @@ from openai import OpenAI
 import strategy_feasibility_analyzer
 import code_optimizer
 import gptfix
+from extractFunc import ExtractFuncs
 
 WT = 1  # while True
 DW = 2  # Do-While
@@ -64,7 +65,13 @@ class CFGOptimizer:
     def init_functions(self):
         # input:  self.code str
         # return: self.functions {func_name: func_body}, self.funcnames [] name list in order
-        return {}
+        e = ExtractFuncs()
+        funcs, funcsname = e.getFuncs(self.code)
+
+        for i in range(len(funcs)):
+            self.functions[funcsname[i]] = funcs[i]
+
+        return self.functions
         
     def strategy_prompt(self, opt_type):
         if opt_type == WF:  # D1
