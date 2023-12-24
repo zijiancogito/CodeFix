@@ -6,6 +6,7 @@
 		"binary":  "%f/binary.out",
 		"starter": "%f/starter%x",
 		"final":   "%f/final",
+		"recomp":   "%f/recomp",
 		"disasm":  "%f/disasm.yml",
 		"tester":  "%f/test.py",
 
