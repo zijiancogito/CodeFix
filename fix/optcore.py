@@ -1,5 +1,6 @@
 import os
 import sys
+from copy import deepcopy
 
 from openai import OpenAI
 
@@ -21,6 +22,7 @@ ND = 10 # nested deep
 class CFGOptimizer:
 
     def __init__(self, chall) -> None:
+        self.strategies = [1,2,3,4,5,6,7,8,9,10]
         self.chall = chall
         self.client = OpenAI(api_key='sk-fnW7WGNc6sfkWrf1SZLiPdLPclvm38X4JcT1M9m4OXmfOQ4f', 
                              base_url='https://api.openai-proxy.org/v1')
@@ -33,8 +35,25 @@ class CFGOptimizer:
         if self.code == None:
             raise NotImplementedError
          
+        self.init_test_score = {}
+        self.init_test()
+
+        self.funcnames = []
         self.functions = {}
         self.init_functions()
+        
+        self.context = self.init_task()
+        
+    def init_test(self):
+        if not os.path.exists(self.chall.final):
+            os.mkdir(self.chall.final)
+            
+        with open(os.path.join(self.chall.final, 'source.c'), 'w') as f:
+            f.write(self.code)
+            
+        fixed_impl = self.chall.impl(self.chall.final)
+        self.chall.build(fixed_impl)
+        self.init_test_score = self.chall.test(fixed_impl)
         
     def fix_compilation_errors(self):
         fixed_code = gptfix.chat(self.code, self.chall.folder)
@@ -42,10 +61,9 @@ class CFGOptimizer:
             return None
         return fixed_code
         
-
     def init_functions(self):
         # input:  self.code str
-        # return: self.functions {func_name: func_body}
+        # return: self.functions {func_name: func_body}, self.funcnames [] name list in order
         return {}
         
     def strategy_prompt(self, opt_type):
@@ -92,9 +110,9 @@ class CFGOptimizer:
         return messages
 
 
-    def strategy_feasibility_analysis(self, opt_type, function, context):
+    def strategy_feasibility_analysis(self, opt_type, function):
         strategy = self.strategy_prompt(opt_type)
-        analyze_result = strategy_feasibility_analyzer.chat(strategy, function, context)
+        analyze_result = strategy_feasibility_analyzer.chat(strategy, function, self.context)
         
         prompt = "I asked a code analyzer about whether a piece of code is suitable for a specific optimization, and this is the response I received. Could you help me analyze whether the response means it is suitable or not? Please answer only with yes or no."
         
@@ -121,10 +139,48 @@ class CFGOptimizer:
         optimized_code = code_optimizer.chat(optimization, function)
         return optimized_code
 
-    def code_check(self, function, )
+    def code_check(self, function, funcname):
+        tmp_functions = deepcopy(self.functions)
+        tmp_functions[funcname] = function
 
+        with open(os.path.join(self.chall.final, 'source.c'), 'w') as f:
+            for func in self.funcnames:
+                f.write(tmp_functions[func])
+                f.write('\n\n')
+                
+        fixed_impl = self.chall.impl(self.chall.final)
+        self.chall.build(fixed_impl)
+        check_res = self.chall.test(fixed_impl)
 
+        for k in check_res:
+            if check_res[k] != self.init_test_score[k]:
+                return False
+        return True
+                
+    def code_update(self, function, funcname):
+        self.functions[funcname] = function
+        self.code = ""
 
+        for func in self.funcnames:
+            self.code += self.functions[func]
+            self.code += "\n\n"
+         
+    def workflow(self, funcname, opt_type):
+        function = self.functions[funcname]
+        
+        opt_analyze = self.strategy_feasibility_analysis(opt_type, function)
+        if len(opt_analyze) == 0:
+            return 1
+        opt_code = self.code_optimization(function, opt_analyze)
+        check_res = self.code_check(self, opt_code, funcname)
+        if check_res == False:
+            return 2
+        self.code_update(opt_code, funcname)
+        return 0
 
-
+    def optimize_all(self):
+        for func in self.funcnames:
+            for st in self.strategies:
+                self.workflow(func, st)
+     
 
