@@ -29,12 +29,18 @@ class CFGOptimizer:
         with open(chall.starter, 'r') as f:
             self.code = f.read()
             
-        self.code = self.fix_code()
-        
+        self.code = self.fix_compilation_errors()
+        if self.code == None:
+            raise NotImplementedError
+         
         self.functions = {}
+        self.init_functions()
         
     def fix_compilation_errors(self):
         fixed_code = gptfix.chat(self.code, self.chall.folder)
+        if fixed_code == None:
+            return None
+        return fixed_code
         
 
     def init_functions(self):
