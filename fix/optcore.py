@@ -191,3 +191,5 @@ class CFGOptimizer:
                 self.workflow(func, st)
      
 
+if __name__ == '__main__':
+    pass
