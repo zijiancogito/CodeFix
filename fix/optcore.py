@@ -17,10 +17,10 @@ CE = 5  # condition exchange
 IS = 6  # IF to SWITCH
 IC = 7  # IF to Condition expression
 WF = 8  # While to For, For to While
-FC = 9  # For statement conplete
+FC = 9  # For statement complete
 ND = 10 # nested deep
 
-## 优化顺序：6->7->8->9->1->2->3->4->5->10
+## 优化顺序：10->5->6->7->8->9->1->2->3->4->5->10
 
 class CFGOptimizer:
 
@@ -93,7 +93,7 @@ class CFGOptimizer:
             return "Please analyze the entire function to determine if there are any redundant conditional statements. If so, can they be merged to make the code clearer and more concise? Please answer with a clear yes or no."
         if opt_type == CE:  # 5
             return "Please determine if there are basic blocks in this code segment that can be reordered to make the code more concise and the logic simpler and clearer. Please answer with a clear yes or no."
-        if opt_type == FC:  # 9
+        if opt_type == FC:  # 9 如果有for的再执行这个
             return "Please determine if the use of for loop statements in this code segment does not conform to programming conventions, exhibiting incomplete statements, and whether it can be optimized. Please answer with a clear yes or no."
         if opt_type == ND:  # 10
             return "Please determine if the loop nesting in this code segment is optimal, and whether there is room to simplify by adjusting the alignment of the control structures. Please answer with a clear yes or no."
