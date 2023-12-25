@@ -20,6 +20,8 @@ WF = 8  # While to For, For to While
 FC = 9  # For statement conplete
 ND = 10 # nested deep
 
+## 优化顺序：6->7->8->9->1->2->3->4->5->10
+
 class CFGOptimizer:
 
     def __init__(self, chall) -> None:
@@ -74,25 +76,26 @@ class CFGOptimizer:
         return self.functions
         
     def strategy_prompt(self, opt_type):
-        if opt_type == WF:  # D1
+    ## 优化顺序：6->7->8->9->1->2->3->4->5->10
+        if opt_type == WF:  # 8
             return "Please determine whether the loop structure in this code segment is more appropriately expressed using while, do-while, or for loops, and whether the code needs to be modified. Please answer with a clear yes or no."
-        if opt_type == IS:
+        if opt_type == IS:  # 6
             return "Please determine whether the branch structure in this code segment is more appropriately expressed using if or switch statements, and whether the code needs to be modified. Please answer with a clear yes or no."
-        if opt_type == IC:
+        if opt_type == IC:  # 7
             return "Does the if-else control structure in this code segment clearly lend itself to simplification into a conditional expression, making the code more concise and more in line with human programming habits? Please answer with a clear yes or no."
-        if opt_type == GT:
+        if opt_type == GT:  # 4
             return "Does this code contain any goto statements, and is it necessary to eliminate goto for optimizing the control structure? Please answer with a clear yes or no."
-        if opt_type == WT:
+        if opt_type == WT:  # 1
             return "Please check if there is any unreasonable While(1) type of control structure in this code. If so, please indicate which line of code has this issue, outputting it in the form of Line X."
-        if opt_type == DW:
+        if opt_type == DW:  # 2
             return "Please consider the entire function to determine if the use of Do-While in this code segment is the optimal choice. Could the use of While instead make the code more concise and clear? Please answer with a clear yes or no."
-        if opt_type == CP:
+        if opt_type == CP:  # 3
             return "Please analyze the entire function to determine if there are any redundant conditional statements. If so, can they be merged to make the code clearer and more concise? Please answer with a clear yes or no."
-        if opt_type == CE:
+        if opt_type == CE:  # 5
             return "Please determine if there are basic blocks in this code segment that can be reordered to make the code more concise and the logic simpler and clearer. Please answer with a clear yes or no."
-        if opt_type == FC:
+        if opt_type == FC:  # 9
             return "Please determine if the use of for loop statements in this code segment does not conform to programming conventions, exhibiting incomplete statements, and whether it can be optimized. Please answer with a clear yes or no."
-        if opt_type == ND:
+        if opt_type == ND:  # 10
             return "Please determine if the loop nesting in this code segment is optimal, and whether there is room to simplify by adjusting the alignment of the control structures. Please answer with a clear yes or no."
         return ""
 
